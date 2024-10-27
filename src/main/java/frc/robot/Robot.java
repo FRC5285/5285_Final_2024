@@ -38,6 +38,8 @@ public class Robot extends TimedRobot {
   private static final String RedRight3High = "Red Right 3 High";
   private static final String RedMid3High = "Red Mid 3 High";
   private static final String RedLeft3High = "Red Left 3 High";
+  private static final String ShootOnly = "Shoot Only";
+  private static final String NoAuton = "No Auton";
 
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
@@ -72,12 +74,15 @@ public class Robot extends TimedRobot {
     /*--------------------------------------------------------------------------
     *  Initialize Auton
     *-------------------------------------------------------------------------*/
-    m_chooser.setDefaultOption(" Blue Left 3 High", BlueLeft3High);
+    m_chooser.setDefaultOption("Shoot Only", ShootOnly);
+    m_chooser.addOption(" Blue Left 3 High", BlueLeft3High);
     m_chooser.addOption("Blue Mid 3 High", BlueMid3High);
     m_chooser.addOption("Blue Right 3 High", BlueRight3High);
     m_chooser.addOption("Red Right 3 High", RedRight3High);
     m_chooser.addOption("Red Mide 3 High", RedMid3High);
     m_chooser.addOption("Red Left 3 High", RedLeft3High);
+    m_chooser.addOption("No Auton", NoAuton);
+
     SmartDashboard.putData("Auto choices", m_chooser);
 
     /*--------------------------------------------------------------------------
@@ -189,6 +194,12 @@ public class Robot extends TimedRobot {
       case RedLeft3High:
         m_autonomousCommand = m_robotContainer.getRedLeft3HighAutonomousCommand();
         // Put custom auto code here
+        break;
+      case ShootOnly:
+        m_autonomousCommand = m_robotContainer.getShootOnlyAutonomousCommand();
+        break;
+      case NoAuton:
+        m_autonomousCommand = null;
         break;
     }
 

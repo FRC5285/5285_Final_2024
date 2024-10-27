@@ -21,49 +21,38 @@ import frc.robot.RobotContainer;
 public class SwerveJoystickCmd extends Command { //Was "extends CommandBase"
 
     private final SwerveSubsystem swerveSubsystem;
-    private final Supplier<Double> xSpdFunction, ySpdFunction, turningSpdFunction, flyWheelFeedFunction;
-    private final Supplier<Double> intakeVacuumFunction;
+    private final Supplier<Double> xSpdFunction, ySpdFunction, turningSpdFunction;
     private final Supplier<Boolean> fieldOrientedFunction;
     private final Supplier<Boolean> aimBotFunction;
     private final Supplier<Boolean> armLowScoreFunction;
     private final Supplier<Boolean> armPickUpFunction;
     private final Supplier<Boolean> armFeedFunction;
-    private final Supplier<Double> climberFunction;
     private final Supplier<Boolean> manualWristUpFunction;
     private final Supplier<Boolean> manualWristDownFunction;
     private final Supplier<Boolean> slowDriveFunction;
-    private final Supplier<Boolean> flyWheelShootFunction;
     private final Supplier<Boolean> resetHeadingFunction;
-    private final Supplier<Double> wristOnlyFunction;
 
     private final SlewRateLimiter xLimiter, yLimiter, turningLimiter;
 
     public SwerveJoystickCmd(SwerveSubsystem swerveSubsystem,
             Supplier<Double> xSpdFunction, Supplier<Double> ySpdFunction, Supplier<Double> turningSpdFunction,
-            Supplier<Boolean> fieldOrientedFunction, Supplier<Boolean> aimBotFunction, Supplier<Double> flyWheelFeedFunction,
-            Supplier<Double> intakeVacuumFunction,
-            Supplier<Boolean> armLowScoreFunction, Supplier<Boolean> armPickUpFunction, Supplier<Boolean> armFeedFunction,
-            Supplier<Double> climberFunction, Supplier<Boolean> manualWristUpFunction,
-            Supplier<Boolean> manualWristDownFunction, Supplier<Boolean> slowDriveFunction, Supplier<Boolean> flyWheelShootFunction,
-            Supplier<Boolean> resetHeadingFunction, Supplier<Double> wristOnlyFunction) {
+            Supplier<Boolean> fieldOrientedFunction, Supplier<Boolean> aimBotFunction, Supplier<Boolean> armLowScoreFunction,
+            Supplier<Boolean> armPickUpFunction,
+            Supplier<Boolean> armFeedFunction, Supplier<Boolean> manualWristUpFunction, Supplier<Boolean> manualWristDownFunction,
+            Supplier<Boolean> slowDriveFunction, Supplier<Boolean> resetHeadingFunction) {
         this.swerveSubsystem = swerveSubsystem;
         this.xSpdFunction = xSpdFunction;
         this.ySpdFunction = ySpdFunction;
         this.turningSpdFunction = turningSpdFunction;
         this.fieldOrientedFunction = fieldOrientedFunction;
         this.aimBotFunction = aimBotFunction;
-        this.flyWheelFeedFunction = flyWheelFeedFunction;
-        this.intakeVacuumFunction = intakeVacuumFunction;
         this.armLowScoreFunction = armLowScoreFunction;
         this.armPickUpFunction = armPickUpFunction; 
         this.armFeedFunction = armFeedFunction;
-        this.climberFunction = climberFunction;
         this.manualWristUpFunction = manualWristUpFunction;
         this.manualWristDownFunction = manualWristDownFunction;
         this.slowDriveFunction = slowDriveFunction;
-        this.flyWheelShootFunction = flyWheelShootFunction;
         this.resetHeadingFunction = resetHeadingFunction;
-        this.wristOnlyFunction = wristOnlyFunction;
         this.xLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
         this.yLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
         this.turningLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAngularAccelerationUnitsPerSecond);
@@ -128,27 +117,6 @@ public class SwerveJoystickCmd extends Command { //Was "extends CommandBase"
 
         // 6. Output each module states to wheels
         swerveSubsystem.setModuleStates(moduleStates);
-
-
-
-        //FlyWheel Shooter
-
-        if(flyWheelShootFunction.get()){
-        RobotContainer.flyWheel.shoot(1);
-        }
-        else{
-        RobotContainer.flyWheel.stop();
-        }
-            
-
-
-        //Intake Vacuum/ Feeder
-        RobotContainer.intake.feed(flyWheelFeedFunction.get());
-        if(intakeVacuumFunction.get()!=0){
-        RobotContainer.intake.vacuum(intakeVacuumFunction.get());
-        }
-        
-
 
         //Arm Movement
         if(armPickUpFunction.get()){

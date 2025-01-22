@@ -1,14 +1,13 @@
 package frc.robot.subsystems;
 
-import com.kauailabs.navx.frc.AHRS;
-//import edu.wpi.first.wpilibj.SPI;
+import com.studica.frc.AHRS;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
@@ -50,14 +49,14 @@ public class SwerveSubsystem extends SubsystemBase {
             DriveConstants.kBackRightDriveAbsoluteEncoderOffsetRad,
             DriveConstants.kBackRightDriveAbsoluteEncoderReversed);
 
-    private SwerveModulePosition[] positions = new SwerveModulePosition[]{
-        frontLeft.getPosition(),
-        frontRight.getPosition(),
-        backLeft.getPosition(),
-        backRight.getPosition()
+    private SwerveModulePosition[] positions = new SwerveModulePosition[] {
+            frontLeft.getPosition(),
+            frontRight.getPosition(),
+            backLeft.getPosition(),
+            backRight.getPosition()
     };
 
-    public final static AHRS gyro = new AHRS(SPI.Port.kMXP);
+    public final static AHRS gyro = new AHRS(AHRS.NavXComType.kMXP_SPI);
     private final SwerveDriveOdometry odometer = new SwerveDriveOdometry(DriveConstants.kDriveKinematics,
             new Rotation2d(0), positions);
 
@@ -91,15 +90,14 @@ public class SwerveSubsystem extends SubsystemBase {
         odometer.resetPosition(getRotation2d(), positions, pose);
     }
 
-    public void resetHeading(Rotation2d angle){
+    public void resetHeading(Rotation2d angle) {
         resetOdometry(new Pose2d(getPose().getTranslation(), angle));
     }
-
-    
 
     @Override
     public void periodic() {
         odometer.update(getRotation2d(), positions);
+        
         /*SmartDashboard.putNumber("Robot Heading", getHeading());
         SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
 
@@ -133,8 +131,6 @@ public class SwerveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Goal Angle BL", desiredStates[2].angle.getDegrees());
         SmartDashboard.putNumber("Goal Angle BR", desiredStates[3].angle.getDegrees());*/
     }
-
-
 
     private Thread aimBotThread;
     public boolean aimBotState = true;
@@ -245,8 +241,5 @@ public class SwerveSubsystem extends SubsystemBase {
       
     });
         aimBotThread.start();
-    
     }
-
-    
 }

@@ -13,7 +13,6 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.util.PixelFormat;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.event.NetworkBooleanEvent;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -93,11 +92,7 @@ public class Robot extends TimedRobot {
     sensor = new SensorObject();
 
     SwerveSubsystem.gyro.reset();
-
     
-
-    RobotContainer.arm.armPivotEnc.reset();
-    RobotContainer.intake.wristEnc.reset();
     RobotContainer.arm.setPivotTargetAngle(RobotContainer.arm.getPivotAngle());
     RobotContainer.intake.setPivotTargetAngle(RobotContainer.intake.getPivotAngle());
 
@@ -110,12 +105,12 @@ public class Robot extends TimedRobot {
     //RobotContainer.flyWheel.flyWheelPID();
 
     //autonClock = new Timer(); //starts in autonInit()
+    if (!Robot.isSimulation()) {
         cam = CameraServer.startAutomaticCapture();
         cam.setFPS(15);
         cam.setResolution(320, 240);
         cam.setPixelFormat(PixelFormat.kMJPEG);
-        
-
+    }
   }
 
   /**

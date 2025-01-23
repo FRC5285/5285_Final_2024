@@ -1,18 +1,10 @@
 package frc.robot.subsystems;
 
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
-import com.ctre.phoenix6.signals.NeutralModeValue;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.WristConstants;
@@ -21,7 +13,6 @@ import frc.robot.RobotContainer;
 public class Intake extends SubsystemBase{
     private final TalonSRX intake;
     private final TalonSRX wrist;
-    
 
     public final DutyCycleEncoder wristEnc;
 
@@ -35,23 +26,18 @@ public class Intake extends SubsystemBase{
 
     private final double INPUT_THRESHOLD = 0.00001;
 
-    private final double PIVOT_OFFSET = 275;
+    private final double PIVOT_OFFSET = 285;
 
     private final double WRIST_PIVOT_MAX_ANGLE = 220.0; 
     private final double WRIST_PIVOT_MIN_ANGLE = -30;
-
 
     public Intake(){
         intake = new TalonSRX(intakeID);
         wrist = new TalonSRX(wristMotorID);
         wristEnc = new DutyCycleEncoder(wristEncoderID);
 
-        wristEnc.setPositionOffset(0);
-
         intake.setNeutralMode(NeutralMode.Brake);
         wrist.setNeutralMode(NeutralMode.Brake);
-
-
 
         intake.configContinuousCurrentLimit(20);
         intake.configPeakCurrentLimit(25);
@@ -60,8 +46,6 @@ public class Intake extends SubsystemBase{
         wrist.configContinuousCurrentLimit(20);
         wrist.configPeakCurrentLimit(25);
         wrist.configPeakCurrentDuration(100);
-
-    
     }
 
     public void vacuum(double power){
@@ -82,7 +66,7 @@ public class Intake extends SubsystemBase{
 
     public double getPivotAngle() 
     {   //returns a decimal (hopefuly)
-        return -(wristEnc.getAbsolutePosition()*360-PIVOT_OFFSET);//%360-294);
+        return -(wristEnc.get()*360-PIVOT_OFFSET);//%360-294);
         //return wristEnc.getAbsolutePosition();//*360;
     }
   
@@ -255,10 +239,6 @@ public class Intake extends SubsystemBase{
                     {
                         wrist.set(ControlMode.PercentOutput, power);   //posititve (ccw) = wrist up
                     }                       //negative (cw) = wrist down
-                    
-            
-            
-
     }
 
     public double getIntakePower(){

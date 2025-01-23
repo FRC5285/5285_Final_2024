@@ -29,14 +29,10 @@ public class FlyWheel extends SubsystemBase{
 
         leftWheel.setNeutralMode(NeutralModeValue.Coast);
         rightWheel.setNeutralMode(NeutralModeValue.Coast);
-
-        
-
     }
 
     public void shoot(double power)
     {
-        
         leftWheel.set(-power*0.8);
         rightWheel.set(power*0.81);//puts spin on ring
     }

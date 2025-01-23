@@ -3,20 +3,14 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix6.hardware.TalonFX;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.ArmConstants;
-import frc.robot.Constants.DriveConstants;
 
 public class Arm extends SubsystemBase{
 
@@ -37,7 +31,7 @@ public class Arm extends SubsystemBase{
     
     //reference the following for pinout configurations on the NavX: https://pdocs.kauailabs.com/navx-mxp/installation/io-expansion/
 
-    private final double PIVOT_OFFSET = 122.13;
+    private final double PIVOT_OFFSET = 115;
 
     private boolean armTargetHit = false;
 
@@ -45,7 +39,6 @@ public class Arm extends SubsystemBase{
 
     public Arm(){
         armPivotEnc = new DutyCycleEncoder(ARM_PIVOT_ENCODER_PORT);
-        armPivotEnc.setPositionOffset(PIVOT_OFFSET/360);
 
         leftShoulder = new TalonSRX(leftShoulderID);
         rightShoulder = new TalonSRX(rightShoulderID);
@@ -65,7 +58,7 @@ public class Arm extends SubsystemBase{
 
     public double getPivotAngle() 
     {   //returns a decimal 0-1 of a full rotation (hopefuly)
-        return armPivotEnc.getAbsolutePosition()*360-PIVOT_OFFSET;
+        return armPivotEnc.get()*360-PIVOT_OFFSET;
     }
   
     public double getPivotTargetAngle()
